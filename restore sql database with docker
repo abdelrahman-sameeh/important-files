@@ -1,0 +1,30 @@
+خطوات ارجاع database
+# Start Docker service
+sudo systemctl start docker
+
+# List all Docker containers
+sudo docker ps -a
+
+# Run SQL Server container interactively
+sudo docker exec -it <container_id> /bin/bash
+
+# Replace <container_id> with your container ID or name
+
+# Open sqlcmd tool inside the container
+/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Abdo1234sasa@#' -C
+
+# Get the logical file names from the backup
+1> RESTORE FILELISTONLY
+2> FROM DISK = N'/var/opt/mssql/backup/Company_SD_Full.bak';
+3> GO
+
+# Use the logical file names to restore the database
+RESTORE DATABASE [TestDatabase]
+FROM DISK = N'/var/opt/mssql/backup/Company_SD_Full.bak'
+WITH FILE = 1,
+MOVE N'Company_SD' TO N'/var/opt/mssql/data/TestDatabase.mdf',
+MOVE N'Company_SD_log' TO N'/var/opt/mssql/data/TestDatabase_log.ldf',
+NOUNLOAD,
+STATS = 5;
+GO
+

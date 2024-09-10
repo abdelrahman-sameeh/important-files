@@ -1,0 +1,14 @@
+#start mogno
+sudo systemctl start docker
+sudo docker start mongodb
+
+#check if container is work
+sudo docker ps
+
+#if container not exist or not work
+sudo docker run -d -p 27017:27017 --name mongodb --restart unless-stopped mongo
+
+#shoe logs
+sudo docker logs mongodb
+#open mongo shell
+sudo docker exec -it mongodb mongo
